@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div th:insert="blocks/header :: header" />
+<div class="px-4 py-5 my-2 text-center mb-5">
+    <div th:insert="blocks/students-element :: students"></div><br>
+
+    <div th:insert="blocks/groups-element :: groups"></div><br>
+
+    <div th:insert="blocks/distribution-element :: distribution"></div><br>
+
+    <div th:insert="blocks/activity-element :: activity"></div><br>
+</div>
+</body>
+</html>

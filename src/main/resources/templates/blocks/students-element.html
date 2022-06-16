@@ -1,0 +1,18 @@
+<div th:fragment="students" class="row">
+    <div class="col">
+        <form action="/add/student" method="post" accept-charset="utf-8" class="container alert alert-info mt-2">
+            <p>Добавление ученика</p>
+            <input type="text" required name="studentName" placeholder="Введите ФИО ученика" class="form-control"><br>
+            <button type="submit" class="btn btn-success">Add</button>
+        </form>
+    </div>
+    <div class="col">
+        <form action="/delete/student" method="post" accept-charset="utf-8" class="container alert alert-info mt-2">
+            <p>Удаление существующего ученика</p>
+            <select name="studentId" id="studentId-4">
+                <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name} + ' (' + ${student.id} + ')'"></option>
+            </select><br><br>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>

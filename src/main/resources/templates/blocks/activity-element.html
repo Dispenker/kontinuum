@@ -1,0 +1,31 @@
+<div th:fragment="activity" class="row">
+    <div class="col">
+        <form action="/add/activity" method="post" accept-charset="utf-8" class="container alert alert-info mt-2">
+            <p>Редактирование Активностей</p>
+            <input type="date" th:value="${date}" required name="date" class="form-control"><br>
+            <select name="groupId" id="groupId">
+                <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.name}"></option>
+            </select><br><br>
+            <select name="studentId" id="studentId">
+                <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name} + ' (' + ${student.id} + ')'"></option>
+            </select><br><br>
+            <input type="number" required name="activity" placeholder="Введите активность на занятиях" class="form-control"><br>
+            <input type="number" required name="homework" placeholder="Введите процент выполненного дз" class="form-control"><br>
+            <p th:text="${warning}" class="alert alert-danger" th:style="'display:' + ${display}"></p>
+            <button type="submit" class="btn btn-success">Add/Update</button>
+        </form>
+    </div>
+    <div class="col">
+        <form action="/delete/activity" method="post" accept-charset="utf-8" class="container alert alert-info mt-2">
+            <p>Удаление Активностей</p>
+            <input type="date" th:value="${date}" required name="date" class="form-control"><br>
+            <select name="groupId" id="groupId-1">
+                <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.name}"></option>
+            </select><br><br>
+            <select name="studentId" id="studentId-1">
+                <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name} + ' (' + ${student.id} + ')'"></option>
+            </select><br><br>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</div>
