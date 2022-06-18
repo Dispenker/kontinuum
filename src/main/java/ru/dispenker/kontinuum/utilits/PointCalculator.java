@@ -1,7 +1,6 @@
 package ru.dispenker.kontinuum.utilits;
 
 import ru.dispenker.kontinuum.models.Activity;
-import ru.dispenker.kontinuum.models.Distribution;
 import ru.dispenker.kontinuum.repo.ActivityRepository;
 import ru.dispenker.kontinuum.repo.DistributionRepository;
 import ru.dispenker.kontinuum.repo.StudentsRepository;
@@ -14,21 +13,18 @@ public class PointCalculator {
     private PointCalculator() { }
 
     public static HashMap<Long, PersonPoint> getStudentsAtDate(DistributionRepository distributionRepo, ActivityRepository activityRepo, StudentsRepository studentsRep, Date firstDate, Date secondDate) {
-        HashMap<String, Integer> lastResults = new HashMap<>(); // Для получения результатов за пробник
-        for (Distribution distribution : distributionRepo.findAll()) {
-            lastResults.put(distribution.getIdGroup() + "_" + distribution.getIdStudent(), distribution.getLastResult());
-        }
-
+        List<Activity> activities = activityRepo.findAllByDateBetween(firstDate, secondDate); // Получение всех записей в промежутке времени
         HashMap<Long, PersonPoint> persons = new HashMap<>(); // Заполнение списка студентов
-        for (Activity activity : activityRepo.findAll()) {
-            if (activity.getDate().getTime() >= firstDate.getTime() && activity.getDate().getTime() <= secondDate.getTime()) {
-                PersonPoint person = persons.getOrDefault(activity.getIdStudent(), new PersonPoint(
-                        activity.getIdStudent(),
-                        studentsRep.findById(activity.getIdStudent()).orElseThrow().getName()));
-                String key = activity.getIdGroup() + "_" + activity.getIdStudent();
-                person.setPoints(calculate(activity.getActivity(), activity.getHomework(), lastResults.getOrDefault(key, 0)));
-                persons.put(activity.getIdStudent(), person);
-            }
+
+        for (Activity activity : activities) { // Перебор записей и расчет баллов
+            PersonPoint person = persons.getOrDefault(activity.getIdStudent(), new PersonPoint(
+                    activity.getIdStudent(),
+                    studentsRep.findById(activity.getIdStudent()).orElseThrow().getName()));
+            person.setPoints(calculate(
+                    activity.getActivity(),
+                    activity.getHomework(),
+                    distributionRepo.findByIdGroupAndIdStudent(activity.getIdGroup(), activity.getIdStudent()).getLastResult()));
+            persons.put(activity.getIdStudent(), person);
         }
 
         return persons;

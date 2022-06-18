@@ -10,41 +10,21 @@ import java.sql.Date;
 public class DataFinder {
 
     public static Activity getActivity(ActivityRepository activityRepos, Date date, Long idGroup, Long idStudent) {
-        for (Activity activity : activityRepos.findAll()) {
-            if (activity.getDate().equals(date)) {
-                if (activity.getIdGroup() == idGroup) {
-                    if (activity.getIdStudent() == idStudent) {
-                        return activityRepos.findById(activity.getId()).orElseThrow();
-                    }
-                }
-            }
-        }
+        Activity activity = activityRepos.findByDateAndIdGroupAndIdStudent(date, idGroup, idStudent);
 
-        return new Activity(date, idGroup, idStudent);
+        return (activity != null) ? activity : new Activity(date, idGroup, idStudent);
     }
 
     public static Distribution getDistribution(DistributionRepository distributionRepo, Long idGroup, Long idStudent) {
-        for (Distribution distribution : distributionRepo.findAll()) {
-            if (distribution.getIdGroup() == idGroup) {
-                if (distribution.getIdStudent() == idStudent) {
-                    return distributionRepo.findById(distribution.getId()).orElseThrow();
-                }
-            }
-        }
+        Distribution distribution = distributionRepo.findByIdGroupAndIdStudent(idGroup, idStudent);
 
-        return new Distribution(idGroup, idStudent);
+        return (distribution != null) ? distribution : new Distribution(idGroup, idStudent);
     }
 
-    public static boolean checkStudentAtGroup(DistributionRepository distributionRepo, Long groupId, Long studentId) {
-        for (Distribution distribution : distributionRepo.findAll()) {
-            if (distribution.getIdGroup() == groupId) {
-                if (distribution.getIdStudent() == studentId) {
-                    return true;
-                }
-            }
-        }
+    public static boolean checkStudentAtGroup(DistributionRepository distributionRepo, Long idGroup, Long idStudent) {
+        Distribution distribution = distributionRepo.findByIdGroupAndIdStudent(idGroup, idStudent);
 
-        return false;
+        return distribution != null;
     }
 
 

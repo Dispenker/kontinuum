@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import ru.dispenker.kontinuum.models.Distribution;
 
 public interface DistributionRepository extends CrudRepository<Distribution, Long> {
+    Distribution findByIdGroupAndIdStudent(Long idGroup, Long idStudent);
 }
